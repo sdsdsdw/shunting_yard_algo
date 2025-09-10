@@ -1,33 +1,28 @@
+#include "../include/expression_parser.hpp"
 #include <iostream>
-#include <string>
-#include <stack>
-#include "../include/Algo.h"
 
-using std::cout, std::string, std::stack;
-
-int main()
-{
-    try
-    {
-        stack<char> st;
-        string input;
+int main() {
+    try {
+        ExpressionParser parser;
+        std::string expression = "-5 + 3";
         
-        cout << "Write smth: ";
-        std::getline(std::cin, input);
+        std::cout << "Выражение: " << expression << "\n\n";
         
-        alfa(input, st);
-
-        cout << "LIFO: ";
-        while(!st.empty()) 
-        {
-            cout << (char)st.top();
-            st.pop();
-        }
-        cout << '\n';
-    }
-    catch (const std::exception &ex)
-    {
-        std::cerr << "Error: " << ex.what() << '\n';
+        auto tokens = parser.tokenize(expression);
+        parser.printTokens(tokens);
+        
+        std::cout << '\n';
+        
+        auto rpn = parser.convertToRPN(tokens);
+        parser.printRPN(rpn);
+        
+        std::cout << '\n';
+        
+        int result = parser.evaluate(expression);
+        std::cout << "Результат: " << result << '\n';
+        
+    } catch (const std::exception& ex) {
+        std::cerr << "Ошибка: " << ex.what() << '\n';
         return 1;
     }
     
